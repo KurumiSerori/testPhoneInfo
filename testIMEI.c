@@ -59,7 +59,6 @@ int get_imei_cd(const char *imei)
    0: fail
    1: ok
 */
-
 int is_imei_valid(const char *imei)
 {
     int cd = get_imei_cd(imei);
@@ -78,35 +77,9 @@ void test_is_imei_valid(const char *testcaseName, const char *imei, int expect)
     }
 }
 
-void test_get_imei_cd(const char *testcaseName, const char *imei, int expect)
-{
-    printf("TESTCASE----%s: ", testcaseName);
-    int result = get_imei_cd(imei);
-    if (result == expect) {
-        printf("PASS\n");
-    } else {
-        printf("FAIL. expect=0x%02x, real=0x%02x\n", expect, result);
-    }
-}
-
 int main()
 {
     printf("test_is_imei_valid\n");
-    // test_is_imei_valid("valid imei 000000000000000", "000000000000000", 1);
-    // test_is_imei_valid("valid imei 012550003170164", "012550003170164", 1);
-    // test_is_imei_valid("valid imei 123412341234564", "123412341234564", 1);
-    // test_is_imei_valid("null imei", NULL, 0);
-    // test_is_imei_valid("invalid imei", "123412341234567", 0);
-    // test_is_imei_valid("invalid imei", "12341234123456", 0);
-    // test_is_imei_valid("invalid imei", "1234123412345678", 0);
-
-    // printf("test_get_imei_cd\n");
-    // test_get_imei_cd("valid imei 000000000000000", "000000000000000", '0');
-    // test_get_imei_cd("valid imei 012550003170164", "012550003170164", '4');
-    // test_get_imei_cd("valid imei 123412341234564", "123412341234564", '4');
-    // test_get_imei_cd("null imei", NULL, -1);
-    // test_get_imei_cd("invalid imei", "12341234123456", -1);
-    // test_get_imei_cd("invalid imei", "1234123412345678", -1);
     char* input;
     while(scanf("%s", input)) {
         printf("%s\n", is_imei_valid(input) == 1 ? "true" : "false");

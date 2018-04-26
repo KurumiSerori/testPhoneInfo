@@ -1,8 +1,10 @@
 ## testPhoneInfo
 
+#### testIMEI.c & testICCID.c
 test the validity of input phone infomation
 
-automatically generate some tuples of valid phone infomation
+#### generatePhoneSoftwareInfo.c
+automatically generate some tuples of valid phone software infomation
 
 ### BUILD
 

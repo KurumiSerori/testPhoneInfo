@@ -17,6 +17,8 @@
 
 using namespace std;
 
+#define FORMAT
+
 const int IMEI_LENGTH = 15;
 const int IMSI_LENGTH = 15;
 const int ICCID_LENGTH = 20;
@@ -31,10 +33,8 @@ int luhn_checksum(const char* data)
     char p;
     int i;
 
-    for (i = 13; i >= 0; i--) {
+    for (i = IMEI_LENGTH - 2; i >= 0; i--) {
         p = data[i];
-        if (!isdigit(p)) return -1;
-
         p -= '0';
         if (even) {
             double_digit = p + p;
@@ -43,7 +43,7 @@ int luhn_checksum(const char* data)
             sum += p;
         }
 
-        even = !even;
+        even = 1 - even;
     }
 
     return sum * 9 % 10;
@@ -80,7 +80,7 @@ int main()
 
 	char randomInt[ICCID_LENGTH+1] = {'\0'};
 
-	for(i = 0; i < IMSI_LENGTH+1; ++i) randomInt[i] = '\0';
+	for(i = 0; i < IMEI_LENGTH+1; ++i) randomInt[i] = '\0';
 	char imei_results[1005][IMEI_LENGTH+1];
 	memset(imei_results, 0, sizeof(imei_results));
 	int turn = -1;
@@ -104,7 +104,7 @@ int main()
 			}
 			int cd = luhn_checksum(randomInt);
 			if (cd != -1)
-				randomInt[IMEI_LENGTH - 1] = cd;
+				randomInt[IMEI_LENGTH - 1] = (char)(cd + '0');
 			else
 				return 2;
 		}
@@ -116,30 +116,32 @@ int main()
 			}
 			int cd = luhn_checksum(randomInt);
 			if(cd != -1)
-				randomInt[IMEI_LENGTH - 1] = cd;
+				randomInt[IMEI_LENGTH - 1] = (char)(cd + '0');
 			else 
 				return 2;
 		}
 		strcpy(imei_results[turn], randomInt);
 	}
 
-	int count = 0;
+	int imei_count = 0;
 	for(i = 0; i < T; ++i) {
 		// if(!strcmp(imei_results[i], "")) continue;
 		if(imei_results[i][0] == '\0') continue;
 		for(j = i + 1; j < T; ++j) {
 			if(!strcmp(imei_results[j], imei_results[i])) {
 				imei_results[j][0] = '\0';
-				count++;
+				imei_count++;
 			}
 		}
 	}
+#ifndef FORMAT
 	cout << "IMEI: " << endl;
 	for(i = 0; i < T; ++i) {
 		if(imei_results[i][0] != '\0')
 			cout << imei_results[i] << endl;
 	}
-	cout << "duplicate: " << count << endl << endl << endl;
+	cout << "duplicate: " << imei_count << endl << endl << endl;
+#endif
 
 
 
@@ -169,23 +171,24 @@ int main()
 		strcpy(imsi_results[turn], randomInt);
 	}
 
-	count = 0;
+	int imsi_count = 0;
 	for(i = 0; i < T; ++i) {
 		if(imsi_results[i][0] == '\0') continue;
 		for(j = i + 1; j < T; ++j) {
 			if(!strcmp(imsi_results[j], imsi_results[i])) {
 				imsi_results[j][0] = '\0';
-				count++;
+				imsi_count++;
 			}
 		}
 	}
+#ifndef FORMAT
 	cout << "IMSI: " << endl;
 	for(i = 0; i < T; ++i) {
 		if(imsi_results[i][0] != '\0')
 			cout << imsi_results[i] << endl;
 	}
-	cout << "duplicate: " << count << endl << endl << endl;
-
+	cout << "duplicate: " << imsi_count << endl << endl << endl;
+#endif
 
 
 
@@ -218,23 +221,45 @@ int main()
 		strcpy(iccid_results[turn], randomInt);
 	}
 
-	count = 0;
+	int iccid_count = 0;
 	for(i = 0; i < T; ++i) {
 		if(iccid_results[i][0] == '\0') continue;
 		for(j = i + 1; j < T; ++j) {
 			if(!strcmp(iccid_results[j], iccid_results[i])) {
 				iccid_results[j][0] = '\0';
-				count++;
+				iccid_count++;
 			}
 		}
 	}
+#ifndef FORMAT
 	cout << "ICCID: " << endl;
 	for(i = 0; i < T; ++i) {
 		if(iccid_results[i][0] != '\0')
 			cout << iccid_results[i] << endl;
 	}
-	cout << "duplicate: " << count << endl;
+	cout << "duplicate: " << iccid_count << endl;
+#endif
 
+#ifdef FORMAT
+	cout << "IMEI\tIMSI\tICCID" << endl;
+	for(i = 0; i < T; ++i) {
+		cout << "{\"";
+		if(imei_results[i][0] != '\0')
+			cout << imei_results[i];
+		cout << "\", \"";
+		if(imsi_results[i][0] != '\0')
+			cout << imsi_results[i];
+		cout << "\", \"";
+		if(iccid_results[i][0] != '\0')
+			cout << iccid_results[i];
+		cout << "\", },\t//";
+		cout << i;
+		cout << endl;
+	}
+	if(imei_count != 0) cout << "IMEI duplicate: " << imei_count << endl;
+	if(imsi_count != 0) cout << "IMSI duplicate: " << imsi_count << endl;
+	if(iccid_count != 0) cout << "ICCID duplicate: " << iccid_count << endl;
 
+#endif
 	return 0;
 }

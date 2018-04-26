@@ -3,7 +3,7 @@
 #### testIMEI.c & testICCID.c
 test the validity of input phone infomation
 
-#### generatePhoneSoftwareInfo.c
+#### generatePhoneSoftwareInfo.cpp
 automatically generate some tuples of valid phone software infomation
 
 ### BUILD

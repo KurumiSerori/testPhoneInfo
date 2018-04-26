@@ -26,6 +26,7 @@ const int ICCID_LENGTH = 20;
 const int MAC_LENGTH = 17;
 const int WIFIMAC_LENGTH = 17;
 const int BLUETOOTHMAC_LENGTH = 17;
+const int ANDROIDID_LENGTH = 16;
 
 int luhn_checksum(const char* data)
 {
@@ -452,11 +453,52 @@ int main()
 
 
 
+	/* --------------------Android ID-------------------- */
+	for(i = 0; i < ANDROIDID_LENGTH+1; ++i) randomChar[i] = '\0';
+	char androidid_results[MAX_RESULTS_NUM][ANDROIDID_LENGTH+1];
+	memset(androidid_results, 0, sizeof(androidid_results));
+	turn = -1;
+	_T = T;
+	while(_T--) {
+		turn++;
+		for(i = 0; i < ANDROIDID_LENGTH; i++) {
+			int choice = rand() % 16;
+			if(choice < 10) {
+				randomChar[i] = (char)(choice + '0');
+			}
+			else {
+				randomChar[i] = (char)(choice - 10 + 'a');
+			}
+			strcpy(androidid_results[turn], randomChar);
+		}
+	}
+
+	int androidid_count = 0;
+	for(i = 0; i < T; ++i) {
+		if(androidid_results[i][0] == '\0') continue;
+		for(j = i + 1; j < T; ++j) {
+			if(!strcmp(androidid_results[j], androidid_results[i])) {
+				androidid_results[j][0] = '\0';
+				androidid_count++;
+			}
+		}
+	}
+#ifndef FORMAT
+	cout << "Android ID: " << endl;
+	for(i = 0; i < T; ++i) {
+		if(androidid_results[i][0] != '\0')
+			cout << androidid_results[i] << endl;
+	}
+	cout << "duplicate: " << androidid_count << endl << endl << endl;
+#endif
 
 
-	// FORMAT output
+
+
+	/* ********************FORMAT output******************** */
+
 #ifdef FORMAT
-	cout << "       IMEI\t\t   IMSI\t\t\tICCID\t\t    Wi-Fi Mac\t\tBluetooth Mac" << endl;
+	cout << "       IMEI\t\t   IMSI\t\t\tICCID\t\t    Wi-Fi Mac\t\tBluetooth Mac\t     Android ID" << endl;
 	for(i = 0; i < T; ++i) {
 		cout << "{\"";
 		if(imei_results[i][0] != '\0')
@@ -472,6 +514,9 @@ int main()
 			cout << wifimac_results[i];
 		cout << "\", \"";
 			cout << bluetoothmac_results[i];
+		cout << "\", \"";
+		if(androidid_results[i][0] != '\0')
+			cout << androidid_results[i];
 		cout << "\", },\t//";
 		cout << i;
 		cout << endl;
@@ -484,6 +529,7 @@ int main()
 //	cout << "Bluetooth Mac kind(7:7:3:1:1:1): " << bluetoothmackind[0] << " " << bluetoothmackind[1] << " " << \
 		bluetoothmackind[2] << " " << bluetoothmackind[3] << " " << bluetoothmackind[4] << " " << \
 		bluetoothmackind[5] << endl;
+	if(androidid_count != 0) cout << "Android ID duplicate: " << androidid_count << endl;
 
 #endif
 	return 0;

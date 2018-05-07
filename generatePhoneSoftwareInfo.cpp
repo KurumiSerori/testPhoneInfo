@@ -18,8 +18,10 @@
 using namespace std;
 
 #define FORMAT
+#define NUMBERED
 
 const int MAX_RESULTS_NUM = 1005;
+const char ALPHABET[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f',};
 const int IMEI_LENGTH = 15;
 const int IMSI_LENGTH = 15;
 const int ICCID_LENGTH = 20;
@@ -79,7 +81,7 @@ int main()
 {
 	srand( time(NULL) );
 	cout << "Case NUM(<=1000): ";
-	int T, i, j;
+	int T, i, j, turn, _T;
 	cin >> T;
 	if(T > 1000) return -1;
 
@@ -93,8 +95,8 @@ int main()
 	for(i = 0; i < IMEI_LENGTH+1; ++i) randomInt[i] = '\0';
 	char imei_results[MAX_RESULTS_NUM][IMEI_LENGTH+1];
 	memset(imei_results, 0, sizeof(imei_results));
-	int turn = -1;
-	int _T = T;
+	turn = -1;
+	_T = T;
 	while(_T--) {
 		turn++;
 		int choice1 = rand() % 2;
@@ -495,7 +497,7 @@ int main()
 
 
 
-	/* ********************FORMAT output******************** */
+	/* --------------------FORMAT Output-------------------- */
 
 #ifdef FORMAT
 	cout << "       IMEI\t\t   IMSI\t\t\tICCID\t\t    Wi-Fi Mac\t\tBluetooth Mac\t     Android ID" << endl;
@@ -517,8 +519,10 @@ int main()
 		cout << "\", \"";
 		if(androidid_results[i][0] != '\0')
 			cout << androidid_results[i];
-		cout << "\", },\t//";
-		cout << i;
+		cout << "\", },";
+#ifdef NUMBERED
+		cout << "\t//" << i;
+#endif
 		cout << endl;
 	}
 	if(imei_count != 0) cout << "IMEI duplicate: " << imei_count << endl;
@@ -530,7 +534,7 @@ int main()
 		bluetoothmackind[2] << " " << bluetoothmackind[3] << " " << bluetoothmackind[4] << " " << \
 		bluetoothmackind[5] << endl;
 	if(androidid_count != 0) cout << "Android ID duplicate: " << androidid_count << endl;
-
 #endif
+
 	return 0;
 }

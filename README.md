@@ -6,11 +6,13 @@ test the validity of input phone infomation
 
 #### generatePhoneSoftwareInfo.cpp
 automatically generate some tuples of valid phone software infomation
+
 ![Software Information](https://raw.githubusercontent.com/KurumiSerori/testPhoneInfo/master/soft.png)
 
 
 #### generatePhoneHardwareInfo.cpp
 automatically generate some tuples of valid phone hardware infomation
+
 <img src="https://raw.githubusercontent.com/KurumiSerori/testPhoneInfo/master/hard.png" width="50%" alt="Hardware Information"/>
 
 

@@ -11,7 +11,7 @@ automatically generate some tuples of valid phone software infomation
 
 #### generatePhoneHardwareInfo.cpp
 automatically generate some tuples of valid phone hardware infomation
-![Hardware Information](https://raw.githubusercontent.com/KurumiSerori/testPhoneInfo/master/hard.png){:height="50%"}
+<img src="https://raw.githubusercontent.com/KurumiSerori/testPhoneInfo/master/hard.png" height="50%" alt="Hardware Information"/>
 
 
 ### BUILD
